@@ -1,0 +1,59 @@
+# Node modules
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production build
+
+dist/
+build/
+
+# Local environment variables
+
+.env
+.env.local
+.env.*.local
+
+# Vite cache
+
+.vite/
+
+# Logs
+
+logs/
+*.log
+*.log.*
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+# IDE / Editor folders
+
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Temporary files
+
+*.tmp
+*.swp
+*.lock
+
+# Optional: JSON server db file if you don't want it in Git
+
+db.json
+
+# Optional: JetBrains IDE files
+
+*.iml
+out/
+.idea/
+
+# Optional: TypeScript build output
+
+*.tsbuildinfo
