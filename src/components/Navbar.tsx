@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 const Navbar = () => {
   const { getTotalItems } = useCart();
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, isAdmin, user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const cartItemCount = getTotalItems();
 
@@ -24,6 +24,14 @@ const Navbar = () => {
             <Link to="/products" className="text-foreground hover:text-primary transition-colors font-medium">
               Shop
             </Link>
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="text-foreground hover:text-primary transition-colors font-medium"
+              >
+                Admin
+              </Link>
+            )}
             <Link to="/cart" className="relative text-foreground hover:text-primary transition-colors">
               <ShoppingCart className="w-6 h-6" />
               {cartItemCount > 0 && (
@@ -86,6 +94,15 @@ const Navbar = () => {
             </Link>
             {isAuthenticated ? (
               <>
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    className="block text-foreground hover:text-primary transition-colors font-medium"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Admin Dashboard
+                  </Link>
+                )}
                 <Link
                   to="/profile"
                   className="block text-foreground hover:text-primary transition-colors font-medium"

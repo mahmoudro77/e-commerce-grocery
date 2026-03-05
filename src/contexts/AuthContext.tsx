@@ -5,11 +5,13 @@ import {
   useEffect,
   ReactNode,
 } from "react";
+import { API_URL } from "@/lib/api";
 
 export interface User {
   id: number;
   email: string;
   name: string;
+  role?: "user" | "admin";
   orders: Order[];
 }
 
@@ -24,6 +26,7 @@ export interface Order {
   }>;
   total: number;
   status: string;
+  userId?: number;
 }
 
 interface AuthContextType {
@@ -36,11 +39,11 @@ interface AuthContextType {
   ) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
+  isAdmin: boolean;
+  addOrder: (order: Order) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-const API_URL = "http://localhost:3000"; // json-server URL
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(() => {
@@ -65,19 +68,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     password: string
   ): Promise<boolean> => {
     try {
-      const response = await fetch(
-        `${API_URL}/users?email=${email}&password=${password}`
-      );
-      const data = await response.json();
-
-      if (data.length > 0) {
-        const foundUser = data[0];
-        const { password: _, ...userWithoutPassword } = foundUser;
-        setUser(userWithoutPassword);
-        return true;
-      }
-
-      return false;
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      if (!response.ok) return false;
+      const safeUser = await response.json();
+      setUser(safeUser);
+      return true;
     } catch (error) {
       console.error("Login error:", error);
       return false;
@@ -93,31 +92,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     name: string
   ): Promise<boolean> => {
     try {
-      // Check if email already exists
-      const check = await fetch(`${API_URL}/users?email=${email}`);
-      const existing = await check.json();
-
-      if (existing.length > 0) {
-        return false;
-      }
-
-      const newUser = {
-        email,
-        password,
-        name,
-        orders: [],
-      };
-
-      const response = await fetch(`${API_URL}/users`, {
+      const response = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newUser),
+        body: JSON.stringify({ email, password, name }),
       });
+      if (!response.ok) return false;
 
       const createdUser = await response.json();
-      const { password: _, ...userWithoutPassword } = createdUser;
-
-      setUser(userWithoutPassword);
+      setUser(createdUser);
       return true;
     } catch (error) {
       console.error("Registration error:", error);
@@ -132,6 +115,50 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
   };
 
+  // ============================
+  // ✔ ADD ORDER to current user
+  // ============================
+  const addOrder = async (order: Order): Promise<void> => {
+    if (!user) return;
+
+    const orderWithUser: Order = { ...order, userId: user.id };
+    const optimisticOrders = [...(user.orders ?? []), orderWithUser];
+
+    // Optimistic update for UI & localStorage
+    setUser({ ...user, orders: optimisticOrders });
+
+    try {
+      // 1) Persist order in top-level /orders collection
+      const createRes = await fetch(`${API_URL}/orders`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderWithUser),
+      });
+
+      if (!createRes.ok) {
+        console.error("Failed to create order in /orders");
+      }
+
+      const created =
+        createRes.ok ? ((await createRes.json()) as Order) : orderWithUser;
+
+      const updatedOrders = [...(user.orders ?? []), created];
+
+      // 2) Patch user with full orders array so it's linked to the user
+      const response = await fetch(`${API_URL}/users/${user.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orders: updatedOrders }),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to persist order on server");
+      }
+    } catch (error) {
+      console.error("Error adding order:", error);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -140,6 +167,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         register,
         logout,
         isAuthenticated: !!user,
+        isAdmin: user?.role === "admin",
+        addOrder,
       }}
     >
       {children}

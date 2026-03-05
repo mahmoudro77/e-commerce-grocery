@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import Navbar from '@/components/Navbar';
+import { API_URL } from '@/lib/api';
 
 interface Product {
   id: number;
@@ -23,7 +24,7 @@ const Products = () => {
   const categories = ['All', 'Fruits', 'Vegetables', 'Dairy', 'Bakery', 'Meat', 'Seafood'];
 
   useEffect(() => {
-    fetch('http://localhost:3000/products')
+    fetch(`${API_URL}/products`)
       .then(res => res.json())
       .then(data => {
         setProducts(data);

@@ -54,7 +54,7 @@ This will start the development server on `http://localhost:8080`
 
 The application uses json-server with mock data in `db.json`. The database includes:
 - 12 sample products across different categories
-- Mock user authentication
+- Mock user authentication (users are stored in `db.json`)
 - Order history
 
 ## Technologies Used
@@ -103,11 +103,15 @@ db.json              # Mock database for json-server
 
 ## Authentication
 
-The app uses mock authentication with localStorage. Default test account:
-- Email: demo@example.com
-- Password: password123
+The app uses json-server for Register/Login and stores the current session in localStorage. Default test account:
+- Customer:
+  - Email: demo@example.com
+  - Password: password123
+- Admin:
+  - Email: admin@example.com
+  - Password: admin123
 
-You can also register a new account which will be stored in localStorage.
+You can also register a new account which will be stored in `db.json` (via json-server).
 
 ## License
 

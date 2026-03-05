@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Leaf, Truck, ShieldCheck } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import Navbar from '@/components/Navbar';
+import { API_URL } from '@/lib/api';
 
 interface Product {
   id: number;
@@ -18,7 +19,10 @@ const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/products?featured=true')
+    const url = new URL(`${API_URL}/products`);
+    url.searchParams.set('featured', 'true');
+
+    fetch(url.toString())
       .then(res => res.json())
       .then(data => setFeaturedProducts(data))
       .catch(err => console.error('Error fetching products:', err));

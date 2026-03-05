@@ -7,11 +7,11 @@ import { toast } from 'sonner';
 
 const Cart = () => {
   const { cart, updateQuantity, removeFromCart, getTotalPrice, clearCart } = useCart();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, addOrder } = useAuth();
   const navigate = useNavigate();
   const total = getTotalPrice();
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (!isAuthenticated) {
       toast.error('Please login to complete your order');
       navigate('/login');
@@ -23,7 +23,20 @@ const Cart = () => {
       return;
     }
 
-    // Mock checkout - in real app, this would process payment
+    const order = {
+      id: Date.now().toString(),
+      date: new Date().toISOString(),
+      items: cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+      total: total + 5.99,
+      status: 'Processing',
+    };
+
+    await addOrder(order);
     toast.success('Order placed successfully!');
     clearCart();
     navigate('/profile');

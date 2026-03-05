@@ -44,9 +44,10 @@ Thumbs.db
 *.swp
 *.lock
 
-# Optional: JSON server db file if you don't want it in Git
-
-db.json
+# JSON server database
+# Keep `db.json` in the repo for a working demo.
+# If you want local-only data, use a separate file name.
+db.local.json
 
 # Optional: JetBrains IDE files
 

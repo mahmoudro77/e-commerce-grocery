@@ -1,0 +1,210 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Organic Bananas",
+      "category": "Fruits",
+      "price": 2.99,
+      "unit": "lb",
+      "image": "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=1200&q=80",
+      "description": "Sweet organic bananas, perfect for smoothies and snacks.",
+      "inStock": true,
+      "featured": true
+    },
+    {
+      "id": 2,
+      "name": "Fresh Strawberries",
+      "category": "Fruits",
+      "price": 4.99,
+      "unit": "box",
+      "image": "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=1200&q=80",
+      "description": "Juicy strawberries picked at peak ripeness.",
+      "inStock": true,
+      "featured": true
+    },
+    {
+      "id": 3,
+      "name": "Avocados",
+      "category": "Fruits",
+      "price": 1.79,
+      "unit": "each",
+      "image": "https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=1200&q=80",
+      "description": "Creamy avocados for salads, toast, and guacamole.",
+      "inStock": true,
+      "featured": false
+    },
+    {
+      "id": 4,
+      "name": "Baby Spinach",
+      "category": "Vegetables",
+      "price": 3.49,
+      "unit": "bag",
+      "image": "https://images.unsplash.com/photo-1582515073490-39981397c445?auto=format&fit=crop&w=1200&q=80",
+      "description": "Tender baby spinach, washed and ready to eat.",
+      "inStock": true,
+      "featured": true
+    },
+    {
+      "id": 5,
+      "name": "Cherry Tomatoes",
+      "category": "Vegetables",
+      "price": 2.89,
+      "unit": "pint",
+      "image": "https://images.unsplash.com/photo-1546470427-227d6c5f8c72?auto=format&fit=crop&w=1200&q=80",
+      "description": "Sweet cherry tomatoes for salads and quick snacks.",
+      "inStock": true,
+      "featured": false
+    },
+    {
+      "id": 6,
+      "name": "Cucumbers",
+      "category": "Vegetables",
+      "price": 0.99,
+      "unit": "each",
+      "image": "https://images.unsplash.com/photo-1568584711075-3d021a7c3ca3?auto=format&fit=crop&w=1200&q=80",
+      "description": "Crisp cucumbers—great for salads and pickling.",
+      "inStock": true,
+      "featured": false
+    },
+    {
+      "id": 7,
+      "name": "Greek Yogurt",
+      "category": "Dairy",
+      "price": 4.99,
+      "unit": "tub",
+      "image": "https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=1200&q=80",
+      "description": "Thick and creamy Greek yogurt, high in protein.",
+      "inStock": true,
+      "featured": true
+    },
+    {
+      "id": 8,
+      "name": "Cheddar Cheese",
+      "category": "Dairy",
+      "price": 5.49,
+      "unit": "block",
+      "image": "https://images.unsplash.com/photo-1552767059-ce182ead6c1b?auto=format&fit=crop&w=1200&q=80",
+      "description": "Aged cheddar with a rich, sharp flavor.",
+      "inStock": true,
+      "featured": false
+    },
+    {
+      "id": 9,
+      "name": "Whole Wheat Bread",
+      "category": "Bakery",
+      "price": 3.99,
+      "unit": "loaf",
+      "image": "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=1200&q=80",
+      "description": "Soft whole wheat bread baked fresh daily.",
+      "inStock": true,
+      "featured": true
+    },
+    {
+      "id": 10,
+      "name": "Butter Croissants",
+      "category": "Bakery",
+      "price": 6.49,
+      "unit": "pack",
+      "image": "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=1200&q=80",
+      "description": "Flaky, buttery croissants—perfect for breakfast.",
+      "inStock": true,
+      "featured": false
+    },
+    {
+      "id": 11,
+      "name": "Chicken Breast",
+      "category": "Meat",
+      "price": 8.99,
+      "unit": "lb",
+      "image": "https://images.unsplash.com/photo-1604908176997-125f25cc500f?auto=format&fit=crop&w=1200&q=80",
+      "description": "Lean chicken breast, ideal for grilling and meal prep.",
+      "inStock": true,
+      "featured": true
+    },
+    {
+      "id": 12,
+      "name": "Salmon Fillet",
+      "category": "Seafood",
+      "price": 12.99,
+      "unit": "lb",
+      "image": "https://images.unsplash.com/photo-1604908554162-5b0e3b54debd?auto=format&fit=crop&w=1200&q=80",
+      "description": "Fresh salmon fillet rich in omega-3s.",
+      "inStock": false,
+      "featured": false
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "email": "demo@example.com",
+      "password": "password123",
+      "name": "Demo User",
+      "role": "user",
+      "orders": []
+    },
+    {
+      "id": 2,
+      "email": "admin@example.com",
+      "password": "admin123",
+      "name": "Store Admin",
+      "role": "admin",
+      "orders": []
+    },
+    {
+      "id": "41e7",
+      "email": "aa@sdn",
+      "password": "11111111",
+      "name": "amlk",
+      "role": "user",
+      "orders": [
+        {
+          "id": "1772710516581",
+          "date": "2026-03-05T11:35:16.581Z",
+          "items": [
+            {
+              "id": 1,
+              "name": "Organic Bananas",
+              "quantity": 6,
+              "price": 2.99
+            }
+          ],
+          "total": 23.93,
+          "status": "Processing",
+          "userId": "41e7"
+        }
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": "1772710448630",
+      "date": "2026-03-05T11:34:08.630Z",
+      "items": [
+        {
+          "id": 1,
+          "name": "Organic Bananas",
+          "quantity": 6,
+          "price": 2.99
+        }
+      ],
+      "total": 23.93,
+      "status": "Processing",
+      "userId": 1
+    },
+    {
+      "id": "1772710516581",
+      "date": "2026-03-05T11:35:16.581Z",
+      "items": [
+        {
+          "id": 1,
+          "name": "Organic Bananas",
+          "quantity": 6,
+          "price": 2.99
+        }
+      ],
+      "total": 23.93,
+      "status": "Processing",
+      "userId": "41e7"
+    }
+  ]
+}

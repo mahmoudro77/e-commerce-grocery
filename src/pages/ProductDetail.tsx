@@ -4,6 +4,7 @@ import { ArrowLeft, ShoppingCart, Plus, Minus } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import Navbar from '@/components/Navbar';
 import { toast } from 'sonner';
+import { API_URL } from '@/lib/api';
 
 interface Product {
   id: number;
@@ -23,7 +24,7 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/products/${id}`)
+    fetch(`${API_URL}/products/${id}`)
       .then(res => res.json())
       .then(data => setProduct(data))
       .catch(err => console.error('Error fetching product:', err));
