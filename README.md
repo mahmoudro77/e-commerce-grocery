@@ -1,22 +1,23 @@
-# FreshMart - Grocery Store Application
+## FreshMart - Grocery Store Application
 
-A full-stack grocery store web application built with React, Vite, and json-server.
+Full-stack grocery store web application built with **React + Vite (frontend)** and **Node.js (Express) + MongoDB (backend)**.
 
 ## Features
 
-- 🏠 Homepage with featured products and categories
-- 🛍️ Product listing with search and category filters
-- 📝 Detailed product pages
-- 🛒 Shopping cart with quantity controls
-- 👤 User authentication (Register/Login)
-- 📦 User profile with order history
-- 📱 Fully responsive design
+- **Storefront**: Home page with featured products and categories
+- **Catalog**: Product listing with search + category filters
+- **Product pages**: Detailed product page
+- **Cart**: Shopping cart with quantity controls and checkout
+- **Auth**: Register / Login (stored in MongoDB)
+- **Orders**: Each order is stored in MongoDB and linked to the user (Order History in Profile)
+- **Admin**: Admin dashboard to **create / edit / delete** products
+- **UI**: Responsive design (Tailwind + shadcn/ui)
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js (v18+ recommended)
 - npm or yarn
 
 ### Installation
@@ -32,30 +33,44 @@ cd <YOUR_PROJECT_NAME>
 npm install
 ```
 
+### Environment Variables
+
+Create a `.env` file in the project root (do **not** commit it). You can copy from `.env.example`.
+
+Example `.env`:
+
+```bash
+VITE_API_URL=http://localhost:4000/api
+MONGODB_URI=<your-mongodb-connection-string>
+```
+
 ### Running the Application
 
-You need to run both the frontend and the backend API server:
+You need to run both the backend API server and the frontend dev server.
 
-1. **Start the json-server (Backend API):**
+1. **Start the backend (Express + MongoDB):**
+
 ```bash
 npm run server
 ```
-This will start the API server on `http://localhost:3000`
 
-2. **Start the React app (Frontend) in a new terminal:**
+Backend runs on `http://localhost:4000/api`.
+
+2. **Start the frontend (Vite) in a new terminal:**
+
 ```bash
 npm run dev
 ```
-This will start the development server on `http://localhost:8080`
 
-3. Open your browser and visit `http://localhost:8080`
+Frontend runs on `http://localhost:8080`.
 
-## Mock Data
+3. Open your browser at `http://localhost:8080`.
 
-The application uses json-server with mock data in `db.json`. The database includes:
-- 12 sample products across different categories
-- Mock user authentication (users are stored in `db.json`)
-- Order history
+## Database / Seed (`db.json`)
+
+- The app now uses **MongoDB** as the source of truth.
+- `db.json` is only used as **optional seed data** (first run) by `backend/server.cjs` if MongoDB is empty.
+- After that, all changes (products, users, orders) are persisted in MongoDB.
 
 ## Technologies Used
 
@@ -69,7 +84,8 @@ The application uses json-server with mock data in `db.json`. The database inclu
   - Lucide React for icons
 
 - **Backend:**
-  - json-server (Mock REST API)
+  - Node.js + Express
+  - MongoDB + Mongoose
 
 ## Project Structure
 
@@ -88,30 +104,45 @@ src/
 │   ├── Cart.tsx
 │   ├── Login.tsx
 │   ├── Register.tsx
+│   ├── AdminDashboard.tsx
 │   └── Profile.tsx
 └── App.tsx           # Main app component
 
-db.json              # Mock database for json-server
+backend/
+└── server.cjs        # Express API + MongoDB connection
+
+db.json               # Optional seed data (used only when DB is empty)
 ```
 
 ## Available Scripts
 
 - `npm run dev` - Start the development server
-- `npm run server` - Start the json-server API
+- `npm run server` - Start the backend API server (Express + MongoDB)
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
 
 ## Authentication
 
-The app uses json-server for Register/Login and stores the current session in localStorage. Default test account:
-- Customer:
-  - Email: demo@example.com
-  - Password: password123
-- Admin:
-  - Email: admin@example.com
-  - Password: admin123
+Default test accounts (seeded on first run if DB is empty):
 
-You can also register a new account which will be stored in `db.json` (via json-server).
+- **Customer**
+  - Email: `demo@example.com`
+  - Password: `password123`
+- **Admin**
+  - Email: `admin@example.com`
+  - Password: `admin123`
+
+You can also register a new account. Users and orders are stored in MongoDB.
+
+## Admin Dashboard
+
+- Route: `/admin`
+- Visible only for users with `role = "admin"`
+- Allows product **create / update / delete**.
+
+## Notes
+
+- This is a demo project. Passwords are stored in plain text for simplicity (do not use in production).
 
 ## License
 

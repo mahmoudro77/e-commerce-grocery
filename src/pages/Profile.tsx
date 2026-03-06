@@ -2,13 +2,28 @@ import { Navigate } from 'react-router-dom';
 import { Package, User as UserIcon } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import Navbar from '@/components/Navbar';
+import { useEffect, useState } from 'react';
 
 const Profile = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, fetchMyOrders } = useAuth();
+  const [loadingOrders, setLoadingOrders] = useState(true);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
+
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      setLoadingOrders(true);
+      await fetchMyOrders();
+      if (mounted) setLoadingOrders(false);
+    };
+    load();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -35,7 +50,11 @@ const Profile = () => {
             Order History
           </h2>
 
-          {user?.orders && user.orders.length > 0 ? (
+          {loadingOrders ? (
+            <div className="bg-card border border-border rounded-xl p-12 text-center">
+              <p className="text-muted-foreground">Loading orders...</p>
+            </div>
+          ) : user?.orders && user.orders.length > 0 ? (
             <div className="space-y-4">
               {user.orders.map(order => (
                 <div key={order.id} className="bg-card border border-border rounded-xl p-6">

@@ -41,6 +41,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isAdmin: boolean;
   addOrder: (order: Order) => Promise<void>;
+  fetchMyOrders: () => Promise<Order[]>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -142,20 +143,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const created =
         createRes.ok ? ((await createRes.json()) as Order) : orderWithUser;
 
-      const updatedOrders = [...(user.orders ?? []), created];
-
-      // 2) Patch user with full orders array so it's linked to the user
-      const response = await fetch(`${API_URL}/users/${user.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orders: updatedOrders }),
-      });
-
-      if (!response.ok) {
-        console.error("Failed to persist order on server");
-      }
+      // keep UI in sync with DB response (id, etc.)
+      setUser({ ...user, orders: [...(user.orders ?? []), created] });
     } catch (error) {
       console.error("Error adding order:", error);
+    }
+  };
+
+  const fetchMyOrders = async (): Promise<Order[]> => {
+    if (!user) return [];
+    try {
+      const res = await fetch(`${API_URL}/orders/me/${user.id}`);
+      if (!res.ok) return [];
+      const orders = (await res.json()) as Order[];
+      setUser({ ...user, orders });
+      return orders;
+    } catch (err) {
+      console.error("Fetch orders error:", err);
+      return [];
     }
   };
 
@@ -169,6 +174,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isAuthenticated: !!user,
         isAdmin: user?.role === "admin",
         addOrder,
+        fetchMyOrders,
       }}
     >
       {children}
